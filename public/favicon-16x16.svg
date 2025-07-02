@@ -1,0 +1,38 @@
+<svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background circle -->
+  <circle cx="8" cy="8" r="7.5" fill="url(#gradient)" stroke="url(#gradient2)" stroke-width="1"/>
+  
+  <!-- Left JSON bracket -->
+  <path d="M4 4 L4 12 M4 4 L6 4 M4 12 L6 12" stroke="white" stroke-width="1" stroke-linecap="round"/>
+  
+  <!-- Right JSON bracket -->
+  <path d="M12 4 L12 12 M10 4 L12 4 M10 12 L12 12" stroke="white" stroke-width="1" stroke-linecap="round"/>
+  
+  <!-- Comparison arrows -->
+  <path d="M7 6 L9 6 M7 8 L9 8 M7 10 L9 10" stroke="white" stroke-width="1" stroke-linecap="round"/>
+  
+  <!-- Arrow heads -->
+  <path d="M8.5 5 L9.5 6 L8.5 7" stroke="white" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M8.5 7 L9.5 8 L8.5 9" stroke="white" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M8.5 9 L9.5 10 L8.5 11" stroke="white" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"/>
+  
+  <!-- JSON dots representing data -->
+  <circle cx="5" cy="6" r="0.5" fill="white"/>
+  <circle cx="5" cy="8" r="0.5" fill="white"/>
+  <circle cx="5" cy="10" r="0.5" fill="white"/>
+  <circle cx="11" cy="6" r="0.5" fill="white"/>
+  <circle cx="11" cy="8" r="0.5" fill="white"/>
+  <circle cx="11" cy="10" r="0.5" fill="white"/>
+  
+  <!-- Gradients -->
+  <defs>
+    <linearGradient id="gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#667eea;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#764ba2;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="gradient2" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#5a6fd8;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#6a4190;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+</svg> 
