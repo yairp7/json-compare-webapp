@@ -226,4 +226,186 @@ export const FormatButton = styled.button`
     opacity: 0.5;
     cursor: not-allowed;
   }
+`;
+
+export const TemplateContainer = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  gap: 1rem;
+  margin-top: 1rem;
+  padding: 1rem;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  background: #fafafa;
+`;
+
+export const TemplateControls = styled.div`
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+`;
+
+export const TemplateSelect = styled.select`
+  padding: 0.5rem;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  background: white;
+  font-size: 0.875rem;
+  min-width: 200px;
+  cursor: pointer;
+
+  &:focus {
+    outline: none;
+    border-color: #1976d2;
+  }
+`;
+
+export const TemplateInput = styled.input`
+  padding: 0.5rem;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  background: white;
+  font-size: 0.875rem;
+  min-width: 150px;
+
+  &:focus {
+    outline: none;
+    border-color: #1976d2;
+  }
+`;
+
+export const TemplateButton = styled.button`
+  padding: 0.5rem 1rem;
+  background: #1976d2;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  font-size: 0.875rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+
+  &:hover {
+    background: #1565c0;
+  }
+
+  &:disabled {
+    background: #ccc;
+    cursor: not-allowed;
+  }
+`;
+
+export const DeleteButton = styled.button`
+  padding: 0.5rem 1rem;
+  background: #f44336;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  font-size: 0.875rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+
+  &:hover {
+    background: #d32f2f;
+  }
+
+  &:disabled {
+    background: #ccc;
+    cursor: not-allowed;
+  }
+`;
+
+export const TemplateInfo = styled.div`
+  font-size: 0.75rem;
+  color: #666;
+  margin-top: 0.5rem;
+`;
+
+export const TemplateActions = styled.div`
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+`;
+
+export const Modal = styled.div`
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+`;
+
+export const ModalContent = styled.div`
+  background: white;
+  padding: 2rem;
+  border-radius: 8px;
+  min-width: 400px;
+  max-width: 500px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+`;
+
+export const ModalTitle = styled.h3`
+  margin: 0 0 1rem 0;
+  color: #333;
+  font-size: 1.1rem;
+`;
+
+export const ModalInput = styled.input`
+  width: 100%;
+  padding: 0.75rem;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 0.875rem;
+  margin-bottom: 1rem;
+
+  &:focus {
+    outline: none;
+    border-color: #1976d2;
+  }
+`;
+
+export const ModalActions = styled.div`
+  display: flex;
+  gap: 0.5rem;
+  justify-content: flex-end;
+`;
+
+export const ModalButton = styled.button`
+  padding: 0.5rem 1rem;
+  border: none;
+  border-radius: 4px;
+  font-size: 0.875rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+`;
+
+export const ModalPrimaryButton = styled(ModalButton)`
+  background: #1976d2;
+  color: white;
+
+  &:hover {
+    background: #1565c0;
+  }
+
+  &:disabled {
+    background: #ccc;
+    cursor: not-allowed;
+  }
+`;
+
+export const ModalSecondaryButton = styled(ModalButton)`
+  background: #f5f5f5;
+  color: #333;
+  border: 1px solid #ddd;
+
+  &:hover {
+    background: #e0e0e0;
+  }
 `; 

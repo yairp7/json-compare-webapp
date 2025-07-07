@@ -1,4 +1,4 @@
-import React, { useState, useRef, useCallback } from 'react';
+import React, { useState, useRef, useCallback, useEffect } from 'react';
 import Tag from './Tag';
 import {
   Container,
@@ -20,10 +20,32 @@ import {
   ValidationIcon,
   ErrorMessage,
   ErrorLocation,
-  FormatButton
+  FormatButton,
+  TemplateContainer,
+  TemplateControls,
+  TemplateSelect,
+  TemplateButton,
+  DeleteButton,
+  TemplateInfo,
+  TemplateActions,
+  Modal,
+  ModalContent,
+  ModalTitle,
+  ModalInput,
+  ModalActions,
+  ModalPrimaryButton,
+  ModalSecondaryButton
 } from './JsonCompare.styled';
 import { compareJson, type DeepCompareResult } from '../utils/jsonCompare';
 import { validateJson, formatJson, type JsonValidationResult } from '../utils/jsonValidation';
+import {
+  saveTemplate,
+  loadAllTemplates,
+  loadTemplate,
+  deleteTemplate,
+  updateTemplate,
+  type Template
+} from '../utils/templateManager';
 
 const JsonCompare: React.FC = () => {
   const [json1, setJson1] = useState<string>('');
@@ -34,6 +56,12 @@ const JsonCompare: React.FC = () => {
   const [validation1, setValidation1] = useState<JsonValidationResult>({ isValid: true });
   const [validation2, setValidation2] = useState<JsonValidationResult>({ isValid: true });
   const tagInputRef = useRef<HTMLInputElement>(null);
+
+  // Template state
+  const [templates, setTemplates] = useState<Template[]>([]);
+  const [selectedTemplateId, setSelectedTemplateId] = useState<string>('');
+  const [templateName, setTemplateName] = useState<string>('');
+  const [showSaveTemplate, setShowSaveTemplate] = useState<boolean>(false);
 
   const addExcludedField = (field: string) => {
     const trimmedField = field.trim();
@@ -104,6 +132,74 @@ const JsonCompare: React.FC = () => {
     }
   };
 
+  // Load templates on component mount
+  useEffect(() => {
+    setTemplates(loadAllTemplates());
+  }, []);
+
+  // Template management functions
+  const handleSaveTemplate = () => {
+    if (templateName.trim() && excludedFields.length > 0) {
+      const newTemplate = saveTemplate(templateName, excludedFields);
+      setTemplates(loadAllTemplates());
+      setSelectedTemplateId(newTemplate.id);
+      setExcludedFields(newTemplate.excludedFields);
+      setTemplateName('');
+      setShowSaveTemplate(false);
+    }
+  };
+
+  const handleLoadTemplate = (templateId: string) => {
+    if (templateId) {
+      const template = loadTemplate(templateId);
+      if (template) {
+        setExcludedFields(template.excludedFields);
+        setSelectedTemplateId(templateId);
+      }
+    } else {
+      setExcludedFields([]);
+      setSelectedTemplateId('');
+    }
+  };
+
+  const handleDeleteTemplate = (templateId: string) => {
+    if (deleteTemplate(templateId)) {
+      setTemplates(loadAllTemplates());
+      if (selectedTemplateId === templateId) {
+        setSelectedTemplateId('');
+      }
+    }
+  };
+
+  const handleUpdateTemplate = () => {
+    if (selectedTemplateId && templateName.trim()) {
+      const updatedTemplate = updateTemplate(selectedTemplateId, templateName, excludedFields);
+      if (updatedTemplate) {
+        setTemplates(loadAllTemplates());
+        setTemplateName('');
+        setShowSaveTemplate(false);
+      }
+    }
+  };
+
+  const openSaveModal = () => {
+    setTemplateName('');
+    setShowSaveTemplate(true);
+  };
+
+  const openUpdateModal = () => {
+    const selectedTemplate = templates.find(t => t.id === selectedTemplateId);
+    if (selectedTemplate) {
+      setTemplateName(selectedTemplate.name);
+      setShowSaveTemplate(true);
+    }
+  };
+
+  const closeModal = () => {
+    setShowSaveTemplate(false);
+    setTemplateName('');
+  };
+
   const canCompare = json1.trim() && json2.trim() && validation1.isValid && validation2.isValid;
 
   const getValidationIcon = (isValid: boolean, hasContent: boolean) => {
@@ -142,6 +238,50 @@ const JsonCompare: React.FC = () => {
             />
           </TagInputContainer>
         </ExcludedFieldsContainer>
+
+        {/* Template Management */}
+        <TemplateContainer>
+          {selectedTemplateId && (
+            <TemplateInfo>
+              {templates.find(t => t.id === selectedTemplateId) && (
+                <span>
+
+                </span>
+              )}
+            </TemplateInfo>
+          )}
+          <TemplateControls>
+            <TemplateSelect
+              value={selectedTemplateId}
+              onChange={(e) => handleLoadTemplate(e.target.value)}
+            >
+              <option value="">Select a template...</option>
+              {templates.map(template => (
+                <option key={template.id} value={template.id}>
+                  {template.name} ({template.excludedFields.length} fields - {new Date(template.createdAt).toLocaleDateString()})
+                </option>
+              ))}
+            </TemplateSelect>
+
+            <TemplateActions>
+              {excludedFields.length > 0 && (
+                <TemplateButton
+                  onClick={selectedTemplateId ? openUpdateModal : openSaveModal}
+                >
+                  {selectedTemplateId ? 'Update' : 'Save'}
+                </TemplateButton>
+              )}
+
+              {selectedTemplateId && (
+                <DeleteButton
+                  onClick={() => handleDeleteTemplate(selectedTemplateId)}
+                >
+                  Delete
+                </DeleteButton>
+              )}
+            </TemplateActions>
+          </TemplateControls>
+        </TemplateContainer>
       </Section>
 
       <Section>
@@ -254,6 +394,40 @@ const JsonCompare: React.FC = () => {
             )}
           </ResultsContent>
         </ResultsContainer>
+      )}
+
+      {/* Template Save/Update Modal */}
+      {showSaveTemplate && (
+        <Modal onClick={closeModal}>
+          <ModalContent onClick={(e) => e.stopPropagation()}>
+            <ModalTitle>
+              {selectedTemplateId ? 'Update Template' : 'Save Template'}
+            </ModalTitle>
+            <ModalInput
+              type="text"
+              value={templateName}
+              onChange={(e) => setTemplateName(e.target.value)}
+              placeholder="Enter template name..."
+              onKeyDown={(e) => {
+                if (e.key === 'Enter' && templateName.trim()) {
+                  selectedTemplateId ? handleUpdateTemplate() : handleSaveTemplate();
+                }
+              }}
+              autoFocus
+            />
+            <ModalActions>
+              <ModalSecondaryButton onClick={closeModal}>
+                Cancel
+              </ModalSecondaryButton>
+              <ModalPrimaryButton
+                onClick={selectedTemplateId ? handleUpdateTemplate : handleSaveTemplate}
+                disabled={!templateName.trim()}
+              >
+                {selectedTemplateId ? 'Update' : 'Save'}
+              </ModalPrimaryButton>
+            </ModalActions>
+          </ModalContent>
+        </Modal>
       )}
     </Container>
   );

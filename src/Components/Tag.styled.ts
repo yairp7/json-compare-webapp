@@ -6,7 +6,7 @@ export const TagContainer = styled.div`
   gap: 0.5rem;
   background: #e3f2fd;
   color: #1976d2;
-  padding: 0.5rem 0.75rem;
+  padding: 0.25rem 0.75rem;
   border-radius: 20px;
   font-size: 0.875rem;
   font-weight: 500;
