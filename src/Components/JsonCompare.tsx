@@ -410,7 +410,8 @@ const JsonCompare: React.FC = () => {
               placeholder="Enter template name..."
               onKeyDown={(e) => {
                 if (e.key === 'Enter' && templateName.trim()) {
-                  selectedTemplateId ? handleUpdateTemplate() : handleSaveTemplate();
+                  if (selectedTemplateId) handleUpdateTemplate();
+                  else handleSaveTemplate();
                 }
               }}
               autoFocus
